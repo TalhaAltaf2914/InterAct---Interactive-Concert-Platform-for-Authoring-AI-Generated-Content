@@ -69,7 +69,7 @@ export default function Navbar() {
           </NavLink>
         </Box>
 
-        <Box 
+        {/* <Box 
           sx={{
             display:"flex",
             justifyContent:'space-between',
@@ -94,7 +94,7 @@ export default function Navbar() {
             ))
           }
           
-        </Box>
+        </Box> */}
       </Container>
     // </AppBar>
   )

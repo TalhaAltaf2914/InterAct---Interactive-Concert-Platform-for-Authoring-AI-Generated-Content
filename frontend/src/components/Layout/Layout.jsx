@@ -3,16 +3,17 @@ import Navbar from '../NavBar/Navbar'
 import Footer from '../Footer/Footer'
 import { Card, Grid, Paper} from '@mui/material'
 import {Outlet} from 'react-router-dom'
+import { Sidebar } from '../Sidebar/Sidebar'
 
 export const Layout = () => {
   return (
     <Grid 
-        sx={{margin:'0px'}}
+        // sx={{margin:'0px'}}
         rowSpacing={3} 
         // gridTemplateRows={'repeat(3, 1fr)'}
         // gridTemplateRows={'auto 1fr auto'}
         // gridTemplateColumns={'1fr'}
-        // sx={{height: '100vh'}} 
+        sx={{height: '100vh', overflow: ''}} 
         container
     >
         <Grid item 
@@ -30,10 +31,14 @@ export const Layout = () => {
             columnSpacing={2} 
 
         >
-            <Grid item sx={{ display: { xs: 'none', md:'block' }, }} md={4}>
-                <Paper>Sidebar</Paper>
-            </Grid>
-            <Grid item xs={12} md={8}>
+            {/* <Grid item sx={{ display: { xs: 'none', md:'block' }, }} md={4}>
+                <Sidebar />
+            </Grid> */}
+            <Grid item 
+                xs={12} 
+                md={12}
+                // md={8}
+            >
                 <Outlet />
             </Grid>
         </Grid>
