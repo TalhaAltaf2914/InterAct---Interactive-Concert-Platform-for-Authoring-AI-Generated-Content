@@ -13,11 +13,14 @@ export const Layout = () => {
         // gridTemplateRows={'repeat(3, 1fr)'}
         // gridTemplateRows={'auto 1fr auto'}
         // gridTemplateColumns={'1fr'}
-        sx={{height: '100vh', overflow: ''}} 
+        sx={{
+            height: '100vh', 
+            overflow: '',
+        }}
         container
     >
         <Grid item 
-        marginBottom={7} 
+        marginBottom={10} 
         xs={12}>
             <Navbar />
         </Grid>
@@ -29,6 +32,8 @@ export const Layout = () => {
             direction='row'
             style={{flexGrow:1, overflow:'auto'}}
             columnSpacing={2} 
+            paddingInline={'1rem'} 
+
 
         >
             {/* <Grid item sx={{ display: { xs: 'none', md:'block' }, }} md={4}>
@@ -45,7 +50,8 @@ export const Layout = () => {
         <Grid 
             item 
             xs={12}
-            style={{position: "fixed", bottom: 0}}
+            
+            style={{position: "", bottom: 0}}
         >
             <Footer />
         </Grid>

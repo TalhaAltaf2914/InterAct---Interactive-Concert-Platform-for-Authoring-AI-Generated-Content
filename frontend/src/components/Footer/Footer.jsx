@@ -1,13 +1,17 @@
-import { Card, Paper } from '@mui/material'
+import { Card, Paper, Typography } from '@mui/material'
 import React from 'react'
 
 const Footer = () => {
   return (
-    <Paper style={{textAlign:'center', width: "100%"}}>
+    <Paper 
+      elevation={3} 
+      style={{textAlign:'center', width: "100%"}}>
       <footer>
-        Footer
+        <Typography variant='body2' color={'GrayText'}>
+          © InterAct 2024
+        </Typography>
       </footer>
-    </Paper >
+    </Paper>
   )
 }
 

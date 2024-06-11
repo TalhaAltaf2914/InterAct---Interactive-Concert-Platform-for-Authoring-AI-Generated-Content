@@ -43,7 +43,7 @@ export default function Navbar() {
         sx={{
           position:'fixed',
           color:'white',
-          backgroundColor:'lightblue',
+          backgroundColor:'Highlight',
           top:0,
           margin: '0px',
           padding:'1rem',
@@ -51,7 +51,8 @@ export default function Navbar() {
           display:"flex",
           justifyContent:'space-between',
           alignItems:'center',
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+          zIndex:'5'
         }}
         
       >
@@ -61,8 +62,8 @@ export default function Navbar() {
             style={{textDecoration:"none"}}
           >
             <Typography 
-              variant='h6'
-              
+              variant='h5'
+              fontWeight={'bold'}
             >
               InterAct
             </Typography >

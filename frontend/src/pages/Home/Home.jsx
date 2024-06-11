@@ -1,8 +1,9 @@
 import { Box, Button, ButtonGroup, Card, Container, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { PassageInput } from './Passage/PassageInput'
 import { Passage } from './Passage/Passage'
+import AddIcon from '@mui/icons-material/Add';
 
+import PostAddIcon from '@mui/icons-material/PostAdd';
 const words = [
   'Flashlight',
   'Cat',
@@ -10,6 +11,8 @@ const words = [
   'Mouse',
   'Books',
   'Phones',
+  'Cups',
+  'Shoes',
 
 ]
 
@@ -26,7 +29,7 @@ export const Home = () => {
         flexDirection:"column",
         // justifyContent: 'space-evenly',
         alignContent:'center',
-        rowGap:'1rem',
+        rowGap:'2rem',
         overflowY: 'scroll',
         minHeight: '100vh',
         height: '100vh',
@@ -72,17 +75,22 @@ export const Home = () => {
         }
         
       </Box>
-        <Button
-          variant='contained'
-          onClick={()=>{
-            setPassages((passages)=>{
-                return [...passages, <Passage />]
-              }
-            )
-          }}  
-        >
-          Add a Passage
-        </Button>
+      <Button
+        
+        sx={{
+          width: 'fit-content',
+          alignSelf:'center'
+        }}
+        variant='contained'
+        onClick={()=>{
+          setPassages((passages)=>{
+              return [...passages, <Passage />]
+            }
+          )
+        }}  
+      >
+        <PostAddIcon />
+      </Button>
     </Paper>
   )
 }

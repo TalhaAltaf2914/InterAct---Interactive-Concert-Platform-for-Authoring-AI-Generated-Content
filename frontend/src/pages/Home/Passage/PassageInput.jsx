@@ -1,13 +1,16 @@
 import { Box, Button, ButtonGroup, Card, TextField } from '@mui/material'
 import React from 'react'
 
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 export const PassageInput = () => {
   return (
-    <Card
+    <Box
         sx={{
             padding:'1rem',
             paddingTop: '0.5rem',
-            width:'70%'
+            width:'70%',
+            minWidth:'300px'
         }}
     >
 
@@ -36,11 +39,11 @@ export const PassageInput = () => {
                 </Button>
                 
                 <ButtonGroup variant="outlined">
-                    <Button>{"<-"}</Button>
-                    <Button>{"->"}</Button>
+                    <Button><NavigateBeforeIcon /></Button>
+                    <Button><NavigateNextIcon /></Button>
                 </ButtonGroup>
             </Box>
         </Box>
-    </Card>
+    </Box>
   )
 }
