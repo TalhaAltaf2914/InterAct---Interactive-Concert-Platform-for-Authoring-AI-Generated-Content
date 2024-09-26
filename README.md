@@ -22,7 +22,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+<!--[![MIT License][license-shield]][license-url] -->
 [![Talha Altaf's LinkedIn][linkedin-shield]][talha-altaf-linkedin-url]
 
 
@@ -34,8 +34,10 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Interactive Concert Platform
-for Authoring AI-Generated Content</h3>
+<h3 align="center">InterAct</h3>
+
+<h4 align='center'>An Interactive Concert Platform
+for Authoring AI-Generated Content</h4>
 
   <p align="center">
     We aim to transform the way art is both created and experienced by actively engaging audiences in participatory experiences. By anticipating the possibilities of modern technology, we’re helping shape the future of art.
@@ -44,9 +46,9 @@ for Authoring AI-Generated Content</h3>
 <!--     <br /> -->
 <!--     <br /> -->
 <!--     <a href="https://github.com/github_username/repo_name">View Demo</a> -->
-    ·
+<!--     · -->
 <!--     <a href="https://github.com/github_username/repo_name/issues/new?labels=bug&template=bug-report---.md">Report Bug</a> -->
-    ·
+<!--     · -->
 <!--     <a href="https://github.com/github_username/repo_name/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a> -->
   </p>
 </div>
@@ -114,22 +116,22 @@ for Authoring AI-Generated Content</h3>
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
+<!--### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
 * npm 
   ```sh
   npm install npm@latest -g
   ```
-
+-->
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+<!--1. Get a free API Key at [https://example.com](https://example.com) -->
+1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content/tree/main
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
@@ -137,7 +139,7 @@ This is an example of how to list things you need to use the software and how to
    ```js
    const API_KEY = 'ENTER YOUR API';
    ```-->
-4. Change git remote url to avoid accidental pushes to base project
+3. Change git remote url to avoid accidental pushes to base project
    ```sh
    git remote set-url origin github_username/repo_name
    git remote -v # confirm the changes
@@ -150,7 +152,7 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+<!-- Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources. -->
 
 _For more examples, please refer to the [homepage](https://interact-2.jimdosite.com/)_
 
@@ -262,4 +264,4 @@ Project Link: [https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-
 [MaterialUI]: https://img.shields.io/badge/Material-UI-20232A?style=for-the-badge&logo=mui&logoColor=61DAFB
 [mui-url]: https://mui.com/
 [zustand-url]: https://zustand.docs.pmnd.rs/getting-started/introduction
-[Zustand]: https://img.shields.io/badge/Zustand-20232A?style=for-the-badge&logo=zustand&logoColor=61DAFB
+[Zustand]: https://img.shields.io/badge/zustand-20232A?style=for-the-badge&logo=zustand&logoColor=61DAFB
