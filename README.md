@@ -23,7 +23,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![Talha Altaf's LinkedIn][linkedin-shield]][https://www.linkedin.com/in/talha-altaf-51b979239]
 
 
 
