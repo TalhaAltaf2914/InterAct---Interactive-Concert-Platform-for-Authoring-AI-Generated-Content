@@ -30,9 +30,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git">
+<!--   <a href="https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
+  </a> -->
 
 <h3 align="center">InterAct</h3>
 
@@ -41,6 +41,7 @@ for Authoring AI-Generated Content</h4>
 
   <p align="center">
     We aim to transform the way art is both created and experienced by actively engaging audiences in participatory experiences. By anticipating the possibilities of modern technology, we’re helping shape the future of art.
+    (<b>Note</b>: This project is still under development)
 <!--     <br /> -->
 <!--     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a> -->
 <!--     <br /> -->
@@ -86,7 +87,7 @@ for Authoring AI-Generated Content</h4>
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![InterAct][product-screenshot]](https://example.com)
+[![InterAct][product-screenshot]](https://interact-2.jimdosite.com/)
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 -->
