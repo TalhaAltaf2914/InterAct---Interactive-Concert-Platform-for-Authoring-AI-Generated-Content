@@ -30,7 +30,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content/">
+  <a href="https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -129,7 +129,7 @@ This is an example of how to list things you need to use the software and how to
 <!--1. Get a free API Key at [https://example.com](https://example.com) -->
 1. Clone the repo
    ```sh
-   git clone https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content/tree/main
+   git clone https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git
    ```
 2. Install NPM packages
    ```sh
@@ -141,7 +141,7 @@ This is an example of how to list things you need to use the software and how to
    ```-->
 3. Change git remote url to avoid accidental pushes to base project
    ```sh
-   git remote set-url origin github_username/repo_name
+   git remote set-url origin https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git
    git remote -v # confirm the changes
    ```
 
@@ -210,9 +210,10 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - talwork148@gmail.com
+<!-- Name - [@twitter_handle](https://twitter.com/twitter_handle) - email -->
+Talha Altaf - talwork148@gmail.com
 
-Project Link: [https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content/new/main?filename=README.md](https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content/new/main?filename=README.md)
+Project Link: [https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git](https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
