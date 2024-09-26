@@ -49,14 +49,14 @@ export default function Navbar() {
           padding:'1rem',
           // paddingRight:'113rem',
           display:"flex",
-          justifyContent:'space-between',
+          justifyContent:'space-around',
           alignItems:'center',
           boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           zIndex:'5'
         }}
         
       >
-        <Box>
+        {/* <Box> */}
           <NavLink
             to='/'
             style={{textDecoration:"none"}}
@@ -68,7 +68,7 @@ export default function Navbar() {
               InterAct
             </Typography >
           </NavLink>
-        </Box>
+        {/* </Box> */}
 
         {/* <Box 
           sx={{

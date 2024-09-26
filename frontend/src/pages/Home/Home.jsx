@@ -1,26 +1,42 @@
 import { Box, Button, ButtonGroup, Card, Container, Paper, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { Passage } from './Passage/Passage'
+import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 
 import PostAddIcon from '@mui/icons-material/PostAdd';
-const words = [
-  'Flashlight',
-  'Cat',
-  'Headphones',
-  'Mouse',
-  'Books',
-  'Phones',
-  'Cups',
-  'Shoes',
+import { Passage } from '../../components/Passage/Passage';
+import { usePassagesStore } from '../../stores/PassagesStore/PassagesStore';
 
-]
+
+import { TransitionGroup } from 'react-transition-group';
 
 export const Home = () => {
 
-  const [passages, setPassages] = useState([]);
+  // const [passages, setPassages] = useState([<Passage />]);
+  const {passages, setPassages, addPassage, deletePassage} = usePassagesStore();
+
+  // const handleDeletePassage = (id) =>{
+  //   setPassages(passages => passages.filter((passage, index) => id !== index))
+  // }
+
+  //on initial render display one passage
+  // useEffect(()=>{
+  //   //add one passage only if passages is empty
+  //   if(passages.length === 0){
+  //     setPassages([
+  //       // {
+  //       //   id:0, 
+  //       //   passageComponent: <Passage id={passages.length}/>
+  //       // }
+  //       <Passage id={passages.length} />
+  //     ])
+  //   }
+
+  // }, [])
+
+  console.log(`num of passages: ${passages.length}`)
+  console.log(passages)
   return (
-    <Paper 
+    <Box 
       elevation={3}
       sx={{
         paddingBlock:"1rem",
@@ -29,52 +45,33 @@ export const Home = () => {
         flexDirection:"column",
         // justifyContent: 'space-evenly',
         alignContent:'center',
-        rowGap:'2rem',
-        overflowY: 'scroll',
-        minHeight: '100vh',
-        height: '100vh',
+        rowGap:'4rem',
+        // overflowY: 'scroll',
+        // minHeight: '100vh',
+        // height: '100vh',
       }}
     >
-      <Box
-        width={'100%'}
-        component="section"
-        // position={'sticky'}
-        // top={'0px'}
-      >
-        <Typography
-          variant='h6'
-        >
-          Toggle Words
-        </Typography>
 
-        <ButtonGroup 
-          variant="text" 
-        >
-          {
-            words.map((word, key)=>(
-              <Button key={key}>{word}</Button>
-            ))
-          }
-        </ButtonGroup>
-      </Box>
-
-      <Box
+      {/* <Box
         width={'100%'}
         overflowY={'scroll'}
         // height={'20vh'}
         display={'flex'}
         flexDirection={'column'}
         rowGap={'3rem'}
-      >
+      > */}
+      {/* <TransitionGroup> */}
+
         {
           passages.length > 0
-            &&
-          passages.map((passageInput, key)=>(
-            passageInput
+          &&
+          passages.map((passage, index)=>(
+            <Passage key={passage.id}  id={passage.id} handleClose={deletePassage}/> // Pass deletePassage to each child
           ))
         }
-        
-      </Box>
+      {/* </TransitionGroup> */}
+
+      {/* </Box> */}
       <Button
         
         sx={{
@@ -83,14 +80,18 @@ export const Home = () => {
         }}
         variant='contained'
         onClick={()=>{
-          setPassages((passages)=>{
-              return [...passages, <Passage />]
+          addPassage(
+            {
+              id: crypto.randomUUID(),
+              component: <Passage id={crypto.randomUUID()}/>
             }
-          )
+            
+        )
+
         }}  
       >
         <PostAddIcon />
       </Button>
-    </Paper>
+    </Box>
   )
 }

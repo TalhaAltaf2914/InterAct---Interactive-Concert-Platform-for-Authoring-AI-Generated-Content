@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../NavBar/Navbar'
 import Footer from '../Footer/Footer'
 import { Card, Grid, Paper} from '@mui/material'
-import {Outlet} from 'react-router-dom'
+import {Outlet, useLocation} from 'react-router-dom'
 import { Sidebar } from '../Sidebar/Sidebar'
 
+import { useLoadingStore } from '../../stores/LoadingStore/LoadingStore'
+import { LoadingBackdrop } from '../LoadingBackdrop/LoadingBackdrop'
+
 export const Layout = () => {
+    const {isLoading, setIsLoading} = useLoadingStore();
+    const location = useLocation();
+    console.log(location)
+    useEffect(()=>{
+        setTimeout(()=>{setIsLoading(false);}, 1000);
+    }, [isLoading])
+
+
   return (
     <Grid 
         // sx={{margin:'0px'}}
@@ -14,14 +25,18 @@ export const Layout = () => {
         // gridTemplateRows={'auto 1fr auto'}
         // gridTemplateColumns={'1fr'}
         sx={{
-            height: '100vh', 
+            // height: '100vh', 
             overflow: '',
         }}
         container
     >
-        <Grid item 
-        marginBottom={10} 
-        xs={12}>
+        <LoadingBackdrop isLoading={isLoading} />
+
+        <Grid 
+            item 
+            marginBottom={10} 
+            xs={12}
+        >
             <Navbar />
         </Grid>
 
@@ -30,10 +45,10 @@ export const Layout = () => {
             item 
             container 
             direction='row'
-            style={{flexGrow:1, overflow:'auto'}}
+            style={{flexGrow:1, overflow:'auto', minHeight:'90vh'}}
             columnSpacing={2} 
-            paddingInline={'1rem'} 
-
+            paddingInline={'5rem'} 
+            xs={12}
 
         >
             {/* <Grid item sx={{ display: { xs: 'none', md:'block' }, }} md={4}>
@@ -51,7 +66,7 @@ export const Layout = () => {
             item 
             xs={12}
             
-            style={{position: "", bottom: 0}}
+            style={{position: "sticky", bottom: 0}}
         >
             <Footer />
         </Grid>

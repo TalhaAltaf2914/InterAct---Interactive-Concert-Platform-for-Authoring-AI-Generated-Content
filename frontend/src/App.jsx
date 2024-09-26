@@ -9,10 +9,10 @@ import {
 import { Home } from './pages/Home/Home'
 import { Layout } from './components/Layout/Layout';
 
+import { Audience } from './pages/Audience/Audience';
 import { CssBaseline } from '@mui/material';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <BrowserRouter future={{ v7_startTransition: true }}>
@@ -20,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path='audience' element={<Audience />} />
           {/* <Route path="about" element={<About />} /> */}
         </Route>
       </Routes>

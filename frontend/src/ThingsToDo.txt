@@ -1,0 +1,3 @@
+- persist input of user e.g. passage input and the result so that on refresh the result stays
+    cuz rn only the components of the passages are being saved which means i'll have to rename the
+    PassagesStore to PassageComponentsStore.
