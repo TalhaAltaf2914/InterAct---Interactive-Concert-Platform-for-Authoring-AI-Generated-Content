@@ -84,8 +84,11 @@ function Picture({images}) {
                     overflow: 'hidden',
                     width: '100%',
                   }}
-                  src={step.imgPath}
-                  alt={step.label}
+                  // src={step.imgPath}
+                  // alt={step.label}
+
+                  src={`data:image/jpeg;base64,${step}`}
+                  alt={"An image here"}
                 />
                 ) : null}
             </div>

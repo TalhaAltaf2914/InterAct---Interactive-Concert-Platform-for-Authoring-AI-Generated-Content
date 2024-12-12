@@ -13,7 +13,7 @@ export const PictureSection = ({images, keywords, setImages}) => {
     const [isLoading, setIsLoading] = useState(false);
     const generateImages = () =>{
         setIsLoading(true)
-        setTimeout(()=>setIsLoading(false), 2000)
+        // setTimeout(()=>setIsLoading(false), 2000)
         setImages(newImages)
 
     }

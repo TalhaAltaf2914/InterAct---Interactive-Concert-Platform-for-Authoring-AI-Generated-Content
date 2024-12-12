@@ -17,15 +17,17 @@ const imagesWithKeywords = [
 ]
 export const PassageInput = (
     {
+        passageInput,
+        setPassageInput,
         setImages,
         keywords,
     }
 ) => {
 
-    const [isLoading, setIsLoading] = useState(false)
+    // const [isLoading, setIsLoading] = useState(false)
     const [passageCount, setPassageCount] = useState(0)
     const [generatedPassages, setGeneratedPassages] = useState([])
-    const [passageInput, setPassageInput] = useState("")
+    // const [passageInput, setPassageInput] = useState("")
     const passageInputRef = useRef(null)
 
 
@@ -82,7 +84,7 @@ export const PassageInput = (
                 ref={passageInputRef}
                 value={passageInput}
                 onChange={(e)=>setPassageInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' ? generatePassage():''}
+                // onKeyDown={e => e.key === 'Enter' ? generatePassage():''} later
                 multiline
                 rows={5}
                 fullWidth
@@ -95,7 +97,7 @@ export const PassageInput = (
                 justifyContent={'space-between'}
                 alignItems={'center'}
             >
-                <Button 
+                {/* <Button 
                     onClick={()=>generatePassage()}
                     variant='contained'
                     disabled={passageInput.length === 0} 
@@ -104,7 +106,7 @@ export const PassageInput = (
                     }}
                 >
                     Generate Passage {isLoading && <CircularProgress sx={{color:'inherit'}} size={20}/>}
-                </Button>
+                </Button> */}
                 
                 <ButtonGroup variant="outlined">
                     <Button  
