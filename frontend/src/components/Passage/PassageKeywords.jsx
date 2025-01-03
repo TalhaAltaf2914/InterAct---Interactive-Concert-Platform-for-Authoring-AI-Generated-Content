@@ -11,15 +11,15 @@ const words = [
   
   ]
 
-export const PassageKeywords = ({keywords, setKeywords}) => {
+export const PassageKeywords = ({keywords, selectedKeywords, setSelectedKeywords}) => {
 
-// const [keywords, setKeywords] = React.useState(() => []);
+// const [selectedKeywords, setSelectedKeywords] = React.useState(() => []);
 
-  const handleFormat = (event, newKeywords) => {
-    setKeywords(newKeywords);
+  const handleFormat = (event, newselectedKeywords) => {
+    setSelectedKeywords(newselectedKeywords);
   };
 
-//   console.log(keywords)
+//   console.log(selectedKeywords)
   return (
     <Box
         width={'100%'}
@@ -36,11 +36,17 @@ export const PassageKeywords = ({keywords, setKeywords}) => {
         <ToggleButtonGroup 
         //   variant="button" 
             color='primary'
-            value={keywords}
+            value={selectedKeywords}
             onChange={handleFormat}
         >
-          {
+          {/* {
             words.map((word, key)=>(
+              <ToggleButton key={key} value={word}>{word}</ToggleButton >
+            ))
+          } */}
+          {
+            
+          keywords.map((word, key)=>(
               <ToggleButton key={key} value={word}>{word}</ToggleButton >
             ))
           }

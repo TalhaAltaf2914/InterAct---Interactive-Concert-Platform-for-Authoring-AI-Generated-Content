@@ -69,8 +69,10 @@ export const PassageInput = (
         sx={{
             padding:'1rem',
             paddingTop: '0.5rem',
-            width:'70%',
-            minWidth:'300px'
+            // width:'70%',
+            // minWidth:'300px',
+            width: '100%',
+            maxWidth: '512px'
         }}
     >
 
@@ -86,7 +88,11 @@ export const PassageInput = (
                 onChange={(e)=>setPassageInput(e.target.value)}
                 // onKeyDown={e => e.key === 'Enter' ? generatePassage():''} later
                 multiline
-                rows={5}
+                rows={20}
+                inputProps={{
+                    cols: 50
+                  }}
+                // maxRows={40}
                 fullWidth
                 placeholder="A potato flew around my room..."
                 variant="filled"

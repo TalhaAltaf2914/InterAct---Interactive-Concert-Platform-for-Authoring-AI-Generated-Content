@@ -20,7 +20,7 @@ export const PictureSection = ({images, keywords, setImages}) => {
   return (
     <Box flexGrow={1} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
         <Picture images={images} />
-        {
+        {/* {
             images.length > 1
                 && 
             <Button variant='outlined' onClick={()=>generateImages()}>
@@ -31,7 +31,7 @@ export const PictureSection = ({images, keywords, setImages}) => {
                     <><RefreshIcon /> Generate New Images</> 
                 }
             </Button>
-        }
+        } */}
     </Box>
   )
 }

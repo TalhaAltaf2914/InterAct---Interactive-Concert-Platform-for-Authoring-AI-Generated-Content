@@ -56,7 +56,11 @@ function Picture({images}) {
   return (
     <Fade in timeout={{ enter: theme.transitions.duration.enteringScreen, exit: theme.transitions.duration.leavingScreen, }}>
 
-    <Box sx={{ maxWidth: 330, flexGrow: 1,  }}>
+    <Box sx={{ 
+      // maxWidth: 330, 
+      maxWidth: 512, 
+      flexGrow: 1,  
+    }}>
       {/* < */}
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -78,11 +82,12 @@ function Picture({images}) {
                   component="img"
                   borderRadius={'1rem'}
                   sx={{
-                    height: 200,
+                    height: 512,
                     display: 'block',
-                    maxWidth: 400,
+                    // maxWidth: 400,
                     overflow: 'hidden',
                     width: '100%',
+                    objectFit: "cover",
                   }}
                   // src={step.imgPath}
                   // alt={step.label}

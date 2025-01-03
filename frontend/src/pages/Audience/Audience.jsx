@@ -5,9 +5,9 @@ import { useAlertStore } from '../../stores/AlertStore/AlertStore';
 import { useLoadingStore } from '../../stores/LoadingStore/LoadingStore';
 import { CollapseAlert } from '../../components/CollapseAlert/CollapseAlert';
 import { KeywordInput } from '../../components/KeywordInput/KeywordInput';
+import axios from 'axios';
 
 export const Audience = () => {
-  // const [addedKeywords, setAddedKeywords] = useState([]);
   const {addedKeywords, setAddedKeywords} = useKeywordsStore();
   
   const {
@@ -29,12 +29,33 @@ export const Audience = () => {
 
     setIsLoading(true);
 
-    setSeverity("success");
-    setAlertMsg("Successfully Entered Keywords!");
-    setShowAlert(true);
+    axios.post("http://127.0.0.1:5000/save_keywords",
+      {
+        "keywords": addedKeywords
+      }
+    )
+    .then(
+      res=>{
+        setSeverity("success");
+        console.log(res)
+        // setAlertMsg("Successfully Entered Keywords!");
+        setAlertMsg(res.data.message);
+          
+        //clearing input after successful saving of keywords
+        setAddedKeywords([]) 
+      }
+    )
+    .catch(err=>{
+      setSeverity("error");
+      // setAlertMsg("Successfully Entered Keywords!");
+      setAlertMsg(err.message || "Unable to save keywords. Please Try Again");
 
-    setAddedKeywords([]) 
-    //better to clear array after response is 200 i.e OK
+    })
+    .finally(()=>{
+      setIsLoading(false);
+      setShowAlert(true);
+    })
+
   }
   
 
