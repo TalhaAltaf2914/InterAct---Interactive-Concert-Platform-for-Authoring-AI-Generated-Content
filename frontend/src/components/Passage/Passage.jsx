@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { usePassagesStore } from '../../stores/PassagesStore/PassagesStore'
 
 import axios from 'axios';
+import { imageModelApi, llmModelApi } from '../../api/modelApis'
 
 export const Passage = (
   {
@@ -19,7 +20,7 @@ export const Passage = (
   }
 ) => {
 
-  const {passages} = usePassagesStore();
+  const {passages, addPassageText, addPassageImages, addDisplayPassageImage} = usePassagesStore();
 
   const [images, setImages] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState(() => []);
@@ -46,102 +47,117 @@ export const Passage = (
     .finally(()=>{
       setIsLoading(false);
     })
+
+    // addDisplayPassageImage({id: id, })
+
   }, [])
 
-  const generate = async() => {
+  const generate = async(passageId) => {
     setIsLoading(true);
 
-    axios.post(
+    llmModelApi.post(
       // "http://localhost:1234/v1/completions",
-      "http://localhost:1234/v1/internal/chat-prompt",
-      {
-        // "model": "Llama-3.1-8B",
-        // "chat_instruct_command": `generate short story with these keywords: ${keywords.map(keyword=>keyword)}. start with: ${passageInput}`,
-        // // "max_tokens": 200,
-        // "mode": "chat-instruct",
+      "/v1/chat/completions",
+  //     {
+  //       // "model": "Llama-3.1-8B",
+  //       // "chat_instruct_command": `generate short story with these keywords: ${keywords.map(keyword=>keyword)}. start with: ${passageInput}`,
+  //       // // "max_tokens": 200,
+  //       // "mode": "chat-instruct",
 
-        //completions request data
-        // "model": "Llama-3.1-8B",
-        // "prompt": passageInput,
-        // "max_tokens": 1600,
+  //       //completions request data
+  //       // "model": "Llama-3.1-8B",
+  //       // "prompt": passageInput,
+  //       // "max_tokens": 1600,
 
-        "messages": [
-    {"role": "system", "content": "You are a helpful assistant who writes creative short stories."},
-    {"role": "user", "content": "Write a short story using the keywords: Headphones, cars, flashlight. The story should start with 'A cat using a phone'."}
-  ],
-  "model": "Llama-3.1-8B",
-  "frequency_penalty": 0.5,
-  "function_call": null,
-  "functions": [],
-  "logit_bias": {},
-  "max_tokens": 200,
-  "n": 1,
-  "presence_penalty": 0.6,
-  "stop": ["\n\n"],
-  "stream": false,
-  "temperature": 0.9,
-  "top_p": 0.95,
-  "user": "example-user",
-  "mode": "instruct",
-  "instruction_template": null,
-  "instruction_template_str": null,
-  "character": null,
-  "name2": null,
-  "context": null,
-  "greeting": null,
-  "name1": null,
-  "user_bio": null,
-  "chat_template_str": null,
-  "chat_instruct_command": null,
-  "continue_": false,
-  "preset": null,
-  "min_p": 0,
-  "dynamic_temperature": false,
-  "dynatemp_low": null,
-  "dynatemp_high": null,
-  "dynatemp_exponent": null,
-  "smoothing_factor": null,
-  "smoothing_curve": null,
-  "top_k": 40,
-  "repetition_penalty": 1.2,
-  "repetition_penalty_range": 512,
-  "typical_p": null,
-  "tfs": null,
-  "top_a": null,
-  "epsilon_cutoff": null,
-  "eta_cutoff": null,
-  "guidance_scale": null,
-  "negative_prompt": "",
-  "penalty_alpha": null,
-  "mirostat_mode": null,
-  "mirostat_tau": null,
-  "mirostat_eta": null,
-  "temperature_last": null,
-  "do_sample": true,
-  "seed": 42,
-  "encoder_repetition_penalty": null,
-  "no_repeat_ngram_size": 2,
-  "dry_multiplier": null,
-  "dry_base": null,
-  "dry_allowed_length": null,
-  "dry_sequence_breakers": null,
-  "xtc_threshold": null,
-  "xtc_probability": null,
-  "truncation_length": null,
-  "max_tokens_second": null,
-  "prompt_lookup_num_tokens": null,
-  "custom_token_bans": "",
-  "sampler_priority": null,
-  "auto_max_new_tokens": false,
-  "ban_eos_token": false,
-  "add_bos_token": true,
-  "skip_special_tokens": true,
-  "grammar_string": null
-      }
+  //       "messages": [
+  //   {"role": "system", "content": "You are a helpful assistant who writes creative short stories."},
+  //   {"role": "user", "content": "Write a short story using the keywords: Headphones, cars, flashlight. The story should start with 'A cat using a phone'."}
+  // ],
+  // "model": "Llama-3.1-8B",
+  // "frequency_penalty": 0.5,
+  // "function_call": null,
+  // "functions": [],
+  // "logit_bias": {},
+  // "max_tokens": 200,
+  // "n": 1,
+  // "presence_penalty": 0.6,
+  // "stop": ["\n\n"],
+  // "stream": false,
+  // "temperature": 0.9,
+  // "top_p": 0.95,
+  // "user": "example-user",
+  // "mode": "instruct",
+  // "instruction_template": null,
+  // "instruction_template_str": null,
+  // "character": null,
+  // "name2": null,
+  // "context": null,
+  // "greeting": null,
+  // "name1": null,
+  // "user_bio": null,
+  // "chat_template_str": null,
+  // "chat_instruct_command": null,
+  // "continue_": false,
+  // "preset": null,
+  // "min_p": 0,
+  // "dynamic_temperature": false,
+  // "dynatemp_low": null,
+  // "dynatemp_high": null,
+  // "dynatemp_exponent": null,
+  // "smoothing_factor": null,
+  // "smoothing_curve": null,
+  // "top_k": 40,
+  // "repetition_penalty": 1.2,
+  // "repetition_penalty_range": 512,
+  // "typical_p": null,
+  // "tfs": null,
+  // "top_a": null,
+  // "epsilon_cutoff": null,
+  // "eta_cutoff": null,
+  // "guidance_scale": null,
+  // "negative_prompt": "",
+  // "penalty_alpha": null,
+  // "mirostat_mode": null,
+  // "mirostat_tau": null,
+  // "mirostat_eta": null,
+  // "temperature_last": null,
+  // "do_sample": true,
+  // "seed": 42,
+  // "encoder_repetition_penalty": null,
+  // "no_repeat_ngram_size": 2,
+  // "dry_multiplier": null,
+  // "dry_base": null,
+  // "dry_allowed_length": null,
+  // "dry_sequence_breakers": null,
+  // "xtc_threshold": null,
+  // "xtc_probability": null,
+  // "truncation_length": null,
+  // "max_tokens_second": null,
+  // "prompt_lookup_num_tokens": null,
+  // "custom_token_bans": "",
+  // "sampler_priority": null,
+  // "auto_max_new_tokens": false,
+  // "ban_eos_token": false,
+  // "add_bos_token": true,
+  // "skip_special_tokens": true,
+  // "grammar_string": null
+  //     }
+  {
+    "messages": [
+        {
+          "role": "user",
+          "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
+        }
+      ],
+      "mode": "instruct",
+      "instruction_template": "Alpaca"
+  }
     )
     .then(res =>{
-      console.log(res.data.choices[0].text);
-      setPassageInput(`${passageInput} ${res.data.choices[0].text}`)
+      let generatedPassageText = res.data.choices[0].message.content;
+      console.log(generatedPassageText);
+      setPassageInput(generatedPassageText)
+      addPassageText(passageId, generatedPassageText)
     })
     .catch((error)=>{
       console.error(error)
@@ -150,10 +166,11 @@ export const Passage = (
       // setIsLoading(false);
     });
 
-    axios.post(
-      "http://localhost:7865/sdapi/v1/txt2img",
+    imageModelApi.post(
+      "/sdapi/v1/txt2img",
       {
-        "prompt": passageInput,
+        // "prompt": `Award winning photography ${selectedKeywords.map(keyword=>keyword)}, ${passageInput}`,
+        "prompt": `${passageInput}`,
         "n_iter": 3,
         // "n_iter" : 3,
 "height" : 1024,
@@ -178,6 +195,7 @@ export const Passage = (
     .then(res =>{
       console.log(res.data.images);
       setImages(res.data.images)
+      addPassageImages(id, res.data.images)
     })
     .catch((error)=>{
       console.error(error)
@@ -238,11 +256,11 @@ export const Passage = (
       >
         <Box>
 
-          {hasInput && <PassageInput passageInput={passageInput} setPassageInput={setPassageInput} setImages={setImages} keywords={keywords}/>}
+          {hasInput && <PassageInput passageId={id} passageInput={passageInput} setPassageInput={setPassageInput} setImages={setImages} keywords={keywords}/>}
           <Button 
-              onClick={()=>generate()}
+              onClick={()=>generate(id)}
               variant='contained'
-              disabled={passageInput.length === 0} 
+              disabled={passageInput?.length === 0} 
               sx={{
                   gap:'0.3rem'
               }}
@@ -250,7 +268,7 @@ export const Passage = (
               Generate Passage {isLoading && <CircularProgress sx={{color:'inherit'}} size={20}/>}
           </Button>
         </Box>
-        {hasPicture && <PictureSection setImages={setImages} keywords={keywords} images={images}/>}
+        {hasPicture && <PictureSection passageId={id} setImages={setImages} images={images}/>}
       </Box>
 
       {/* <Box></Box> */}

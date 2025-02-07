@@ -11,6 +11,8 @@ import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import ImageIcon from '@mui/icons-material/Image';
 import { Fade } from '@mui/material';
+import { useEffect } from 'react';
+import { usePassagesStore } from '../../stores/PassagesStore/PassagesStore';
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 // const images = [
@@ -36,22 +38,55 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 //   },
 // ];
 
-function Picture({images}) {
+function Picture({passageId 
+  // images
+}) {
+  
+  const {passageImages, setActiveImageIndex, getActiveImageIndex, getPassageImages} = usePassagesStore();
+  
+  const [images, setImages] = React.useState([]);
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
+  const [activeImage, setActiveImage] = React.useState("");
   const maxSteps = images.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    
+    // setDisplayPassageImage(passageId, activeImage)
   };
 
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
+
+  // useEffect(()=>{
+  //   addDisplayPassageImage({id:passageId, image:""})
+  // }, [])
+
+  // useEffect(()=>{
+  //   setDisplayPassageImage(passageId, activeImage)
+  // }, [activeImage])
+
+  console.log(passageImages);
+  
+  useEffect(() => {
+    const fetchedImages = getPassageImages(passageId);
+    console.log("Fetched images:", fetchedImages);
+    if (fetchedImages.length > 0) {
+      setImages([...fetchedImages]); // Force re-render
+      // setActiveImage(fetchedImages[0]);
+      setActiveImageIndex(passageId, activeStep)
+
+    }
+  }, [passageId, activeStep, passageImages]);
+  console.log(images);
+  console.log(getActiveImageIndex(passageId))
 
   return (
     <Fade in timeout={{ enter: theme.transitions.duration.enteringScreen, exit: theme.transitions.duration.leavingScreen, }}>
@@ -77,7 +112,8 @@ function Picture({images}) {
               // key={step.label}
               key={index}
             >
-              {Math.abs(activeStep - index) <= 2 ? (
+              {Math.abs(activeStep - index) <= 2 ? 
+              (
                 <Box
                   component="img"
                   borderRadius={'1rem'}
@@ -91,8 +127,8 @@ function Picture({images}) {
                   }}
                   // src={step.imgPath}
                   // alt={step.label}
-
-                  src={`data:image/jpeg;base64,${step}`}
+                  onChange={()=>{setActiveImage(`data:image/${step.includes('/9j/') ? 'jpeg' : 'png'};base64,${step}`)}}
+                  src={`data:image/${step.includes('/9j/') ? 'jpeg' : 'png'};base64,${step}`}
                   alt={"An image here"}
                 />
                 ) : null}

@@ -8,7 +8,7 @@ const Footer = () => {
       style={{textAlign:'center', width: "100%"}}>
       <footer>
         <Typography variant='body2' color={'GrayText'}>
-          © InterAct 2024
+          © InterAct {new Date().getFullYear()}
         </Typography>
       </footer>
     </Paper>

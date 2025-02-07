@@ -27,11 +27,11 @@ export const PassageKeywords = ({keywords, selectedKeywords, setSelectedKeywords
         // position={'sticky'}
         // top={'0px'}
       >
-        <Typography
+        {/* <Typography
           variant='h6'
         >
           Keywords
-        </Typography>
+        </Typography> */}
 
         <ToggleButtonGroup 
         //   variant="button" 
