@@ -84,6 +84,9 @@ function Picture({passageId
       setActiveImageIndex(passageId, activeStep)
 
     }
+    else{
+      setImages([]);
+    }
   }, [passageId, activeStep, passageImages]);
   console.log(images);
   console.log(getActiveImageIndex(passageId))

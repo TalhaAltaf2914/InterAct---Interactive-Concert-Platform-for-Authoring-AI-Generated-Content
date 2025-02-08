@@ -120,6 +120,19 @@ export const usePassagesStore = create(
             activePassageIndexes: [{id: 0, index:0}],
             activeImageIndexes: [{id: 0, index:0}],
 
+            resetPassages: () => {
+                // const state = get(); // Get current state
+    
+                set({
+                    passages: [{id: 0}],
+                    passageTexts: [{id: 0, texts: []}],
+                    passageImages: [{id: 0, images: []}],
+                    displayPassagesImage:[{id:0, displayImage: ""}],
+                    activePassageIndexes: [{id: 0, index:0}],
+                    activeImageIndexes: [{id: 0, index:0}],
+                });
+            },
+
             setPassages: (newPassages) => set({ passages: newPassages }),
             
             setActivePassageIndex: (id, index) => set((state) => ({

@@ -11,12 +11,14 @@ export const PassageInput = (
         passageId,
         passageInput="",
         setPassageInput,
-        setImages,
-        keywords,
     }
 ) => {
 
-    const {passages, passageTexts, getPassageTexts, activePassageIndexes, setActivePassageIndex, getActivePassageIndex} = usePassagesStore();
+    const {
+        passages, 
+        passageTexts, getPassageTexts, 
+        activePassageIndexes, setActivePassageIndex, getActivePassageIndex
+    } = usePassagesStore();
 
     console.log(passages, passageTexts)
     // const [isLoading, setIsLoading] = useState(false)
@@ -59,9 +61,16 @@ export const PassageInput = (
         console.log("Retrieved passages:", passagesFromStore); // Debugging
         if (passagesFromStore.length > 0) {
             // setPassageCount(passagesFromStore.length - 1)
+            setPassageCount(passagesFromStore?.length - 1)
             setGeneratedPassages(passagesFromStore);
             setPassageInput(passagesFromStore[passageCount] || ""); // Avoid undefined errors
             setActivePassageIndex(passageId, passageCount)
+            
+        }
+        else{
+            setPassageCount(0);
+            setGeneratedPassages([]);
+            setPassageInput("");
             
         }
     }, [passageId, passageCount, passageTexts]); // Include passageTexts to detect updates

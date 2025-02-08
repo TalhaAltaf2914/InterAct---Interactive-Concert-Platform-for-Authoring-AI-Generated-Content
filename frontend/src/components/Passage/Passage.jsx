@@ -20,7 +20,7 @@ export const Passage = (
   }
 ) => {
 
-  const {passages, addPassageText, addPassageImages, addDisplayPassageImage} = usePassagesStore();
+  const {passages, passageTexts, addPassageText, addPassageImages, addDisplayPassageImage} = usePassagesStore();
 
   const [images, setImages] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState(() => []);
@@ -34,6 +34,11 @@ export const Passage = (
 
   // }
 
+  useEffect(()=>{
+    if(passageTexts[0]?.texts.length === 0){
+      setSelectedKeywords([])
+    }
+  }, [passages, passageTexts])
   useEffect(()=>{
     setIsLoading(true)
     axios.get("http://127.0.0.1:5000/get_random_keywords?count=6")
@@ -256,7 +261,15 @@ export const Passage = (
       >
         <Box>
 
-          {hasInput && <PassageInput passageId={id} passageInput={passageInput} setPassageInput={setPassageInput} setImages={setImages} keywords={keywords}/>}
+          {
+            hasInput 
+              && 
+            <PassageInput 
+              passageId={id} 
+              passageInput={passageInput} 
+              setPassageInput={setPassageInput} 
+            />
+          }
           <Button 
               onClick={()=>generate(id)}
               variant='contained'

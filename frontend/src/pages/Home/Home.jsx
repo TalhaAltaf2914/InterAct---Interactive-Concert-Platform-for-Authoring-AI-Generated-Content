@@ -1,15 +1,14 @@
 import { Box, Button, ButtonGroup, Card, Container, Paper, TextField, Typography } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
-import { useReactToPrint } from "react-to-print";
-import html2pdf from 'html2pdf.js';
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Passage } from '../../components/Passage/Passage';
 import { usePassagesStore } from '../../stores/PassagesStore/PassagesStore';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
 import { TransitionGroup } from 'react-transition-group';
 import ReactPDF, { Page, Image, Text, View, Document, StyleSheet, PDFDownloadLink } from "@react-pdf/renderer";
+import { useKeywordsStore } from '../../stores/KeywordsStore/KeywordsStore';
 
 // Add styles for the image and text
 const styles = StyleSheet.create({
@@ -19,6 +18,16 @@ const styles = StyleSheet.create({
   body: { fontSize: 12, flex: 1 },
   image: { width: 150, height: 150, marginLeft: 20 }, // Define image size and margin
 });
+
+const convertBase64ToBlobURL = (base64String) => {
+  const byteCharacters = atob(base64String);
+  const byteNumbers = new Array(byteCharacters.length).map((_, i) =>
+    byteCharacters.charCodeAt(i)
+  );
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], { type: "image/png" });
+  return URL.createObjectURL(blob);
+};
 
 const MyPDFDocument = ({ passages, passageTexts, passageImages, getActivePassageIndex, getActiveImageIndex }) => {
   
@@ -31,11 +40,13 @@ const MyPDFDocument = ({ passages, passageTexts, passageImages, getActivePassage
           <Text style={styles.title}>Passage {index + 1}</Text>
           <View style={{flexDirection:'row', gap:'1rem'}}>
             {/* Display image if it exists */}
-            {passageImages[index]?.images 
+            {passageImages[index]?.images.length > 0
               && 
               // <Image style={styles.image} src={`data:image/${passageImages[index]?.images[0]?.includes('/9j/') ? 'jpeg' : 'png'};base64,${passageImages[index]?.images[0]}`} />
               // <Image  style={styles.image} src={`data:image/${passageImages[index]?.images[getActiveImageIndex(passage.id)]?.includes('/9j/') ? 'jpeg' : 'png'};base64,${passageImages[index]?.images[getActiveImageIndex(passage.id)]}`} />
               <Image  style={styles.image} src={`data:image/png;base64,${passageImages[index]?.images[getActiveImageIndex(passage.id)]}`} />
+              // <Image style={styles.image} src={convertBase64ToBlobURL(passageImages[index]?.images[getActiveImageIndex(passage.id)])} />
+
             }
             {/* Ensure you're extracting and passing plain text */}
             {/* <Text style={styles.body}>{passageTexts[index]?.texts[passageTexts[index]?.texts.length - 1]}</Text> */}
@@ -49,22 +60,52 @@ const MyPDFDocument = ({ passages, passageTexts, passageImages, getActivePassage
 )};
 
 
+
 export const Home = () => {
 
   // const [passages, setPassages] = useState([<Passage />]);
-  const {passages, passageTexts, passageImages, getActivePassageIndex, getActiveImageIndex, setPassages, addPassage, deletePassage} = usePassagesStore();
+  const {
+    passages, 
+    passageTexts, 
+    passageImages, 
+    getActivePassageIndex, getActiveImageIndex, 
+    addPassage, deletePassage,
+    resetPassages, 
+  } = usePassagesStore();
+
+  // const {resetKeywords} = useKeywordsStore();
 
   
   console.log(`num of passages: ${passages.length}`)
   console.log(passages)
   const pdfRef = useRef();
+  const [pdfReady, setPdfReady] = useState(false); // Controls when to generate PDF
+
+  const [pdfBlob, setPdfBlob] = useState(null);
+const [loadingPDF, setLoadingPDF] = useState(false);
+
+const generatePdfBlob = async () => {
+  setLoadingPDF(true);
+  const pdfDoc = <MyPDFDocument passages={passages} passageTexts={passageTexts} passageImages={passageImages} getActivePassageIndex={getActivePassageIndex} getActiveImageIndex={getActiveImageIndex} />;
   
+  const asBlob = await ReactPDF.pdf(pdfDoc).toBlob();
+  setPdfBlob(URL.createObjectURL(asBlob));
+  setLoadingPDF(false);
+};
+
+// Call this function when data updates
+// useEffect(() => {
+//   generatePdfBlob();
+// }, [passages, passageTexts, passageImages]);
+  // useEffect(() => {
+  //   // setPdfReady(true); // Update PDF when passages or images change
+  // }, [passages, passageTexts, passageImages]);
   return (
     <Box 
       ref={pdfRef}
       elevation={3}
       sx={{
-        paddingBlock:"1rem",
+        paddingBlock:"3rem",
         paddingInline: '2rem',
         display:'flex',
         flexDirection:"column",
@@ -76,38 +117,75 @@ export const Home = () => {
         // height: '100vh',
       }}
     >
-      { 
+      {/* { 
       passages.length > 0
-      &&
-      <PDFDownloadLink
-        type='button'
-        style={{backgroundColor: 'green', color:'white', fontWeight:'bold', width:'fit-content', textDecoration:'none', padding:'0.2rem', borderRadius:'0.2rem'}}
-        document={<MyPDFDocument 
-          passages={passages} 
-          passageTexts={passageTexts}
-          passageImages={passageImages}
-          getActivePassageIndex={getActivePassageIndex}
-          getActiveImageIndex={getActiveImageIndex}
-        />}
-        fileName="passages.pdf"
+      && */}
+      <Container 
+        sx={{
+          // border:'1px solid black',
+          display:'flex',
+          flexDirection:'row',
+          justifyContent:'space-between',
+          alignItems:'center',
+          // paddingInline:'20rem',
+          paddingBlock:'0.2rem',
+          position: 'absolute',
+          top:'6rem'
+        }}
+        // maxWidth
       >
-        Export
-      </PDFDownloadLink>
+        <Button
+          color='primary'
+          style={{
+            // backgroundColor: "blue",
+            // color: "white",
+            width: "fit-content",
+            padding: "0.4rem",
+          }}
+          endIcon={<FileDownloadIcon />}
+          disabled={!passageTexts[0]?.texts.length > 0 && !passageImages[0]?.images.length > 0}
+          onMouseEnter={(e)=>{
+            // if(!passageTexts[0].texts.length > 0){
+            //   e.mo
+            // }
+          }}
+          // onClick={() => setPdfReady(false)} // Reset state before triggering download
+      >
+        {/* {pdfReady ? ( */}
+          <PDFDownloadLink
+            document={
+              <MyPDFDocument
+                passages={passages}
+                passageTexts={passageTexts}
+                passageImages={passageImages}
+                getActivePassageIndex={getActivePassageIndex}
+                getActiveImageIndex={getActiveImageIndex}
+              />
+            }
 
-      }
-      {/* <Box
-        width={'100%'}
-        overflowY={'scroll'}
-        // height={'20vh'}
-        display={'flex'}
-        flexDirection={'column'}
-        rowGap={'3rem'}
-      > */}
+            style={{textDecoration:'none'}}
+            fileName="passages.pdf"
+            // onClick={() => setPdfReady(true)} // Ensure PDF updates after click
+          >
+            Export
+          </PDFDownloadLink>
+        {/* ) : ( */}
+          {/* "Preparing..." */}
+        {/* )} */}
+      </Button>
+
+        <Button 
+          disabled={!passageTexts[0]?.texts.length > 0}
+          endIcon={<RestartAltIcon />} 
+          onClick={()=>{resetPassages()}}
+        >
+          Reset
+        </Button>
+      </Container>
+      {/* } */}
+      
       
       {/* <TransitionGroup> */}
-      {/* <div ref={pdfRef}> */}
-      {/* <Document>
-        <Page size="A4" style={styles.page}>  */}
           {
             passages.length > 0
             &&
@@ -121,9 +199,6 @@ export const Home = () => {
               //{/* </View> */}
               ))
             }
-        {/* </Page>
-      </Document> */}
-      {/* </div> */}
       {/* </TransitionGroup> */}
 
       {/* </Box> */}
@@ -133,6 +208,7 @@ export const Home = () => {
           width: 'fit-content',
           alignSelf:'center'
         }}
+        
         variant='contained'
         onClick={()=>{
           let id = crypto.randomUUID();
@@ -140,14 +216,8 @@ export const Home = () => {
             {
               id: id,
               component: <Passage id={id}/>,
-              // passageTexts: []
             }
           )
-
-          // addPassageText(id)
-          // passageTexts: [{id: 0, texts: []}]
-
-
         }}  
       >
         <PostAddIcon />
