@@ -73,12 +73,18 @@ export const PassageInput = (
             setPassageInput("");
             
         }
-    }, [passageId, passageCount, passageTexts]); // Include passageTexts to detect updates
+    }, [passageId, getPassageTexts(passageId)]); // Include passageTexts to detect updates
 
 
-    // useEffect(()=>{
-    //     setActivePassageIndex(passageId, passageCount)
-    // }, [passageCount])
+
+    useEffect(()=>{
+        const passagesFromStore = getPassageTexts(passageId);
+        setPassageInput(passagesFromStore[passageCount] || ""); // Avoid undefined errors
+
+        setActivePassageIndex(passageId, passageCount)
+    }, [passageCount])
+
+
     console.log(getActivePassageIndex(passageId))
     console.log(passageCount)
     console.log(generatedPassages)

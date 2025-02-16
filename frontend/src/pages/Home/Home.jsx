@@ -9,6 +9,9 @@ import { usePassagesStore } from '../../stores/PassagesStore/PassagesStore';
 import { TransitionGroup } from 'react-transition-group';
 import ReactPDF, { Page, Image, Text, View, Document, StyleSheet, PDFDownloadLink } from "@react-pdf/renderer";
 import { useKeywordsStore } from '../../stores/KeywordsStore/KeywordsStore';
+import { CollapseAlert } from '../../components/CollapseAlert/CollapseAlert';
+import { useLoadingStore } from '../../stores/LoadingStore/LoadingStore';
+import { useAlertStore } from '../../stores/AlertStore/AlertStore';
 
 // Add styles for the image and text
 const styles = StyleSheet.create({
@@ -73,6 +76,13 @@ export const Home = () => {
     resetPassages, 
   } = usePassagesStore();
 
+  const {
+        alertMsg, setAlertMsg,
+        showAlert, setShowAlert,
+        severity, setSeverity
+      } = useAlertStore();
+  const {isLoading, setIsLoading} = useLoadingStore();
+
   // const {resetKeywords} = useKeywordsStore();
 
   
@@ -117,6 +127,19 @@ const generatePdfBlob = async () => {
         // height: '100vh',
       }}
     >
+
+      {/* {
+          <CollapseAlert 
+          msg={alertMsg}
+          severity={severity}
+          timeoutInMinutes={4}
+
+          setMsg = {setAlertMsg}
+          setSeverity={setSeverity}
+          showAlert={showAlert}
+          setShowAlert={setShowAlert} 
+        />
+        } */}
       {/* { 
       passages.length > 0
       && */}
@@ -175,7 +198,9 @@ const generatePdfBlob = async () => {
       </Button>
 
         <Button 
-          disabled={!passageTexts[0]?.texts.length > 0}
+          disabled={!passageTexts[0]?.texts.length > 0 
+            // || !passages.length > 0
+          }
           endIcon={<RestartAltIcon />} 
           onClick={()=>{resetPassages()}}
         >

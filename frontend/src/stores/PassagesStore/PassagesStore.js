@@ -10,9 +10,29 @@ const indexedDBStorage = {
         request.onupgradeneeded = (event) => {
           const db = event.target.result;
           if (!db.objectStoreNames.contains("store")) {
-            db.createObjectStore("store");
+            // db.createObjectStore("store");
+            db.createObjectStore("store", { keyPath: "id" });
           }
         };
+        // const request = indexedDB.open("PassageDB", 1); // Ensure you use the correct version
+
+        // request.onupgradeneeded = (event) => {
+        //     const db = event.target.result;
+        //     if (!db.objectStoreNames.contains("store")) {
+        //         db.createObjectStore("store", { keyPath: "id" });
+        //     }
+        // };
+
+        // request.onsuccess = function(event) {
+        //     console.log("Database opened successfully");
+        //     const db = event.target.result;
+            
+        //     if (!db.objectStoreNames.contains("store")) {
+        //         console.error("Object store does not exist! Try upgrading the version.");
+        //     } else {
+        //         console.log("Object store exists and is ready to use.");
+        //     }
+        // };
   
         request.onsuccess = (event) => {
           const db = event.target.result;
@@ -23,6 +43,17 @@ const indexedDBStorage = {
           putRequest.onsuccess = () => resolve();
           putRequest.onerror = () => reject(putRequest.error);
         };
+        // request.onsuccess = function(event) {
+        //     const db = event.target.result;
+            
+        //     if (db.objectStoreNames.contains("store")) {
+        //         const transaction = db.transaction("store", "readwrite");
+        //         const store = transaction.objectStore("store");
+        //         store.put({ id: 1, index: 0 }); // Example write operation
+        //     } else {
+        //         console.error("Object store does not exist yet!");
+        //     }
+        // };
   
         request.onerror = () => reject(request.error);
       });
@@ -135,18 +166,47 @@ export const usePassagesStore = create(
 
             setPassages: (newPassages) => set({ passages: newPassages }),
             
-            setActivePassageIndex: (id, index) => set((state) => ({
-                activePassageIndexes: state.activePassageIndexes.map(activePassageIndex =>{
-                    if(activePassageIndex.id === id){
-                        // alert(`Updated passage index: ${index}`)
-                        return {
-                            ...activePassageIndex,
-                            index: index,
+            // setActivePassageIndex: (id, index) => set((state) => ({
+            //     activePassageIndexes: state.activePassageIndexes.map(activePassageIndex =>{
+            //         if(activePassageIndex.id === id){
+            //             // alert(`Updated passage index: ${index}`)
+            //             return {
+            //                 ...activePassageIndex,
+            //                 index: index,
+            //             }
+            //         }
+            //         return activePassageIndex;
+            //     })
+            // })),  
+
+            setActivePassageIndex: (id, index) => {
+                const state = get(); // Get current state
+    
+                set({
+                    activePassageIndexes: state.activePassageIndexes.map(activePassageIndex => {
+                        if (activePassageIndex.id === id) {
+                            return { ...activePassageIndex, index };
                         }
-                    }
-                    return activePassageIndex;
-                })
-            })),     
+                        return activePassageIndex;
+                    })
+                });
+            },
+            // setActivePassageIndex: (id, index) => {
+            //     if (id === undefined || index === undefined) {  // Explicitly check for undefined
+            //         console.error("Invalid id or index", { id, index });
+            //         return;
+            //     }
+            
+            //     set((state) => ({
+            //         activePassageIndexes: state.activePassageIndexes.map(activePassageIndex => {
+            //             if (activePassageIndex.id === id) {
+            //                 return { ...activePassageIndex, index };
+            //             }
+            //             return activePassageIndex;
+            //         })
+            //     }));
+            // },
+                        
             
             setActiveImageIndex: (id, index) => set((state) => ({
                 activeImageIndexes: state.activeImageIndexes.map(activeImageIndex =>{
@@ -275,6 +335,49 @@ export const usePassagesStore = create(
                 console.log("Found passageText:", passageText); // Debugging
                 
                 return passageText ? passageText.texts : []; // Safe return
+            },
+
+            getPreviousPassageActiveText: (id) =>{
+                console.log(`id passed to getPreviousPassageActiveText: ${id}`)
+                const passageTexts = get().passageTexts || []; // Ensure it's always an array
+                console.log("passageTexts in getPreviousPassageActiveText:", passageTexts);
+
+                const activePassageIndexes = get().activePassageIndexes || []; // Ensure it's always an array
+
+                console.log("activePassageIndexes: ", activePassageIndexes);
+
+                let prevPassageActiveId = 0;
+                let prevPassageActiveIndex = 0;
+                
+                for (let activePassageIndex of activePassageIndexes){
+                    if(activePassageIndex.id !== id){
+                        console.log("activPassageIndex: ", activePassageIndex)
+                        console.log("activePassageIndex['index']: ", activePassageIndex["index"]);
+                        console.log("activePassageIndex.id: ", activePassageIndex.id);
+                        prevPassageActiveIndex = activePassageIndex["index"];
+                        prevPassageActiveId = activePassageIndex.id;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                
+
+
+                console.log("passageTexts:", passageTexts); // Debugging
+                console.log("prevPassageActiveId:", prevPassageActiveId); // Debugging
+                console.log("prevPassageActiveIndex:", prevPassageActiveIndex); // Debugging
+                
+                let prevPassageActiveText = "";
+                // passageTexts[prevPassageActiveId].texts[prevPassageActiveIndex];
+                for (let passageText of passageTexts){
+                    if (passageText.id === prevPassageActiveId){
+                        prevPassageActiveText = passageText.texts[prevPassageActiveIndex];
+                    }
+                }
+                
+                console.log("prevPassageActiveIndex:", prevPassageActiveIndex); // Debugging
+                return prevPassageActiveText ? prevPassageActiveText : ""; // Safe return
             },
 
             getPassageImages: (id) => {

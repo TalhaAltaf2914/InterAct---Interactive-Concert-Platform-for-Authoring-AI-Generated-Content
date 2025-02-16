@@ -9,6 +9,9 @@ import { usePassagesStore } from '../../stores/PassagesStore/PassagesStore'
 
 import axios from 'axios';
 import { imageModelApi, llmModelApi } from '../../api/modelApis'
+import { CollapseAlert } from '../CollapseAlert/CollapseAlert'
+import { useAlertStore } from '../../stores/AlertStore/AlertStore'
+import { useLoadingStore } from '../../stores/LoadingStore/LoadingStore'
 
 export const Passage = (
   {
@@ -19,8 +22,18 @@ export const Passage = (
     handleClose = (id) => {},
   }
 ) => {
+  const {
+    passages, 
+    passageTexts, addPassageText, getPassageTexts, 
+    addPassageImages, getPreviousPassageActiveText, setActivePassageIndex} = usePassagesStore();
 
-  const {passages, passageTexts, addPassageText, addPassageImages, addDisplayPassageImage} = usePassagesStore();
+  const {
+      alertMsg, setAlertMsg,
+      showAlert, setShowAlert,
+      severity, setSeverity
+    } = useAlertStore();
+
+    // const {isLoading, setIsLoading} = useLoadingStore(); 
 
   const [images, setImages] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState(() => []);
@@ -30,15 +43,19 @@ export const Passage = (
 
   console.log(`${selectedKeywords.map(keyword=>keyword)}`)
 
-  // const generateImages = async () => {
-
-  // }
-
   useEffect(()=>{
     if(passageTexts[0]?.texts.length === 0){
       setSelectedKeywords([])
     }
   }, [passages, passageTexts])
+
+  
+  // useEffect(()=>{
+  //   if(getPassageTexts(id).length === 0){
+  //     setSelectedKeywords([])
+  //   }
+  // }, [passages, passageTexts])
+
   useEffect(()=>{
     setIsLoading(true)
     axios.get("http://127.0.0.1:5000/get_random_keywords?count=6")
@@ -59,115 +76,69 @@ export const Passage = (
 
   const generate = async(passageId) => {
     setIsLoading(true);
+    let llmParams = {
+      "messages": [
+          {
+            "role": "user",
+            "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
+          },
+          
+        ],
+        "mode": "instruct",
+        "instruction_template": "Alpaca"
+    }
 
+
+    if(passageId !== passages[0].id){
+      let previousPassageActiveText = getPreviousPassageActiveText(passageId);
+      console.log(`previousPassageActiveText: ${previousPassageActiveText}`)
+      llmParams.messages.push(
+        {
+          "role": "assistant",
+          "content": `${previousPassageActiveText}` //including the previous generated passages
+          // "content": `${.map(passageText => passageText)}` //including the previous generated passages
+        },
+        {
+          "role": "user",
+          "content": `Write a paragraph of a short story with these keywords: ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput} and continue with the knowledge of our past conversation`
+        }
+      )
+    }
+    
     llmModelApi.post(
       // "http://localhost:1234/v1/completions",
       "/v1/chat/completions",
-  //     {
-  //       // "model": "Llama-3.1-8B",
-  //       // "chat_instruct_command": `generate short story with these keywords: ${keywords.map(keyword=>keyword)}. start with: ${passageInput}`,
-  //       // // "max_tokens": 200,
-  //       // "mode": "chat-instruct",
-
-  //       //completions request data
-  //       // "model": "Llama-3.1-8B",
-  //       // "prompt": passageInput,
-  //       // "max_tokens": 1600,
-
-  //       "messages": [
-  //   {"role": "system", "content": "You are a helpful assistant who writes creative short stories."},
-  //   {"role": "user", "content": "Write a short story using the keywords: Headphones, cars, flashlight. The story should start with 'A cat using a phone'."}
-  // ],
-  // "model": "Llama-3.1-8B",
-  // "frequency_penalty": 0.5,
-  // "function_call": null,
-  // "functions": [],
-  // "logit_bias": {},
-  // "max_tokens": 200,
-  // "n": 1,
-  // "presence_penalty": 0.6,
-  // "stop": ["\n\n"],
-  // "stream": false,
-  // "temperature": 0.9,
-  // "top_p": 0.95,
-  // "user": "example-user",
-  // "mode": "instruct",
-  // "instruction_template": null,
-  // "instruction_template_str": null,
-  // "character": null,
-  // "name2": null,
-  // "context": null,
-  // "greeting": null,
-  // "name1": null,
-  // "user_bio": null,
-  // "chat_template_str": null,
-  // "chat_instruct_command": null,
-  // "continue_": false,
-  // "preset": null,
-  // "min_p": 0,
-  // "dynamic_temperature": false,
-  // "dynatemp_low": null,
-  // "dynatemp_high": null,
-  // "dynatemp_exponent": null,
-  // "smoothing_factor": null,
-  // "smoothing_curve": null,
-  // "top_k": 40,
-  // "repetition_penalty": 1.2,
-  // "repetition_penalty_range": 512,
-  // "typical_p": null,
-  // "tfs": null,
-  // "top_a": null,
-  // "epsilon_cutoff": null,
-  // "eta_cutoff": null,
-  // "guidance_scale": null,
-  // "negative_prompt": "",
-  // "penalty_alpha": null,
-  // "mirostat_mode": null,
-  // "mirostat_tau": null,
-  // "mirostat_eta": null,
-  // "temperature_last": null,
-  // "do_sample": true,
-  // "seed": 42,
-  // "encoder_repetition_penalty": null,
-  // "no_repeat_ngram_size": 2,
-  // "dry_multiplier": null,
-  // "dry_base": null,
-  // "dry_allowed_length": null,
-  // "dry_sequence_breakers": null,
-  // "xtc_threshold": null,
-  // "xtc_probability": null,
-  // "truncation_length": null,
-  // "max_tokens_second": null,
-  // "prompt_lookup_num_tokens": null,
-  // "custom_token_bans": "",
-  // "sampler_priority": null,
-  // "auto_max_new_tokens": false,
-  // "ban_eos_token": false,
-  // "add_bos_token": true,
-  // "skip_special_tokens": true,
-  // "grammar_string": null
-  //     }
-  {
-    "messages": [
-        {
-          "role": "user",
-          "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
-        }
-      ],
-      "mode": "instruct",
-      "instruction_template": "Alpaca"
-  }
+      llmParams
+      // {
+        
+      //   "messages": [
+      //       {
+      //         "role": "user",
+      //         "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
+      //       },
+            
+      //     ],
+      //     "mode": "instruct",
+      //     "instruction_template": "Alpaca"
+      // }
     )
     .then(res =>{
       let generatedPassageText = res.data.choices[0].message.content;
       console.log(generatedPassageText);
       setPassageInput(generatedPassageText)
       addPassageText(passageId, generatedPassageText)
+      // setActivePassageIndex()
+      // setSeverity("success");
+      // setAlertMsg("Successfully generated Passage. Please Try Again");
     })
     .catch((error)=>{
       console.error(error)
+      // setSeverity("error");
+      // setAlertMsg("Unable to generate Passage. Please Try Again");
+      setIsLoading(false);
     })
     .finally(()=>{
+      // setShowAlert(true);
       // setIsLoading(false);
     });
 
@@ -201,12 +172,20 @@ export const Passage = (
       console.log(res.data.images);
       setImages(res.data.images)
       addPassageImages(id, res.data.images)
+      
+      // setSeverity("success");
+      // setAlertMsg("Successfully generated Passage");
+      // setShowAlert(true);
     })
     .catch((error)=>{
       console.error(error)
+      // set
+      // setSeverity("error");
+      // setAlertMsg("Unable to generate Passage. Please Try Again");
     })
     .finally(()=>{
       setIsLoading(false);
+      // setShowAlert(true);
     });
 
   }
@@ -214,6 +193,7 @@ export const Passage = (
   return (
     
     <Fade in>
+      
 
     <Card
     id={id}
@@ -228,6 +208,19 @@ export const Passage = (
         columnGap:'2rem',
       }} 
     >
+
+{/* {!isLoading &&
+        <CollapseAlert 
+        msg={alertMsg}
+        severity={severity}
+        timeoutInMinutes={4}
+
+        setMsg = {setAlertMsg}
+        setSeverity={setSeverity}
+        showAlert={showAlert}
+        setShowAlert={setShowAlert} 
+      />
+      } */}
       <Box
         width={'100%'}
         display={'flex'}
@@ -236,7 +229,10 @@ export const Passage = (
       >
         { hasKeywords && <PassageKeywords keywords={keywords} selectedKeywords={selectedKeywords} setSelectedKeywords={setSelectedKeywords}/> }
         
-        <Button 
+        {
+          passages[0].id !== id
+            &&
+          <Button 
           variant='text'
           disabled={passages.length <= 1}
         onClick={(e)=>{
@@ -246,6 +242,7 @@ export const Passage = (
         }}>
           <CloseIcon />
         </Button>
+        }
       </Box>
 
       <Box 
@@ -273,7 +270,7 @@ export const Passage = (
           <Button 
               onClick={()=>generate(id)}
               variant='contained'
-              disabled={passageInput?.length === 0} 
+              disabled={passageInput?.length === 0 || isLoading} 
               sx={{
                   gap:'0.3rem'
               }}
