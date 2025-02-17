@@ -119,7 +119,7 @@ export const PassageInput = (
                   }}
                 // maxRows={40}
                 fullWidth
-                placeholder="A potato flew around my room..."
+                placeholder="How shall we begin?"
                 variant="filled"
             />
 

@@ -32,6 +32,12 @@ const convertBase64ToBlobURL = (base64String) => {
   return URL.createObjectURL(blob);
 };
 
+let tempPrevParams = {
+  "messages": [],
+  "mode": "instruct",
+  "instruction_template": "Alpaca"
+};
+
 const MyPDFDocument = ({ passages, passageTexts, passageImages, getActivePassageIndex, getActiveImageIndex }) => {
   
 
@@ -81,7 +87,8 @@ export const Home = () => {
         showAlert, setShowAlert,
         severity, setSeverity
       } = useAlertStore();
-  const {isLoading, setIsLoading} = useLoadingStore();
+  // const {isLoading, setIsLoading} = useLoadingStore();
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // const {resetKeywords} = useKeywordsStore();
 
@@ -166,7 +173,11 @@ const generatePdfBlob = async () => {
             padding: "0.4rem",
           }}
           endIcon={<FileDownloadIcon />}
-          disabled={!passageTexts[0]?.texts.length > 0 && !passageImages[0]?.images.length > 0}
+          // disabled={!passageTexts[0]?.texts.length > 0 || !passageImages[0]?.images.length > 0}
+          // disabled={isGenerating}
+          disabled={!passageTexts[0]?.texts.length > 0 || !passageImages[0]?.images.length > 0
+            || isGenerating
+          }
           onMouseEnter={(e)=>{
             // if(!passageTexts[0].texts.length > 0){
             //   e.mo
@@ -198,11 +209,22 @@ const generatePdfBlob = async () => {
       </Button>
 
         <Button 
-          disabled={!passageTexts[0]?.texts.length > 0 
-            // || !passages.length > 0
+          disabled={!passageTexts[0]?.texts.length > 0 || !passageImages[0]?.images.length > 0
+          || isGenerating
           }
+
+          // disabled={!isGenerating}
           endIcon={<RestartAltIcon />} 
-          onClick={()=>{resetPassages()}}
+          onClick={()=>{
+            resetPassages()
+            tempPrevParams = {
+              "messages": [],
+              "mode": "instruct",
+              "instruction_template": "Alpaca"
+            };
+
+            setIsGenerating(false);
+          }}
         >
           Reset
         </Button>
@@ -219,7 +241,11 @@ const generatePdfBlob = async () => {
                 <Passage 
                   key={passage.id} 
                   id={passage.id} 
+                  index={index}
                   handleClose={deletePassage}
+                  tempPrevParams={tempPrevParams}
+                  isGenerating={isGenerating}
+                  setIsGenerating={setIsGenerating}
                 />
               //{/* </View> */}
               ))

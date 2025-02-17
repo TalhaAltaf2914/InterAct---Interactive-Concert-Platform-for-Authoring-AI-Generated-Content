@@ -152,8 +152,7 @@ export const usePassagesStore = create(
             activeImageIndexes: [{id: 0, index:0}],
 
             resetPassages: () => {
-                // const state = get(); // Get current state
-    
+                const state = get(); // Get current state
                 set({
                     passages: [{id: 0}],
                     passageTexts: [{id: 0, texts: []}],

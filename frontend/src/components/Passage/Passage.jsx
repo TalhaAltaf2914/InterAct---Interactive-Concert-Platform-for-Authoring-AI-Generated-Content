@@ -13,13 +13,19 @@ import { CollapseAlert } from '../CollapseAlert/CollapseAlert'
 import { useAlertStore } from '../../stores/AlertStore/AlertStore'
 import { useLoadingStore } from '../../stores/LoadingStore/LoadingStore'
 
+
+
 export const Passage = (
   {
     id=0,
+    index=0,
+    isGenerating=false,
+    setIsGenerating,
     hasPicture=true,
     hasKeywords=true,
     hasInput=true,
     handleClose = (id) => {},
+    tempPrevParams,
   }
 ) => {
   const {
@@ -40,6 +46,19 @@ export const Passage = (
   const [keywords, setKeywords] = useState(() => []);
   const [passageInput, setPassageInput] = useState("");
   const [isLoading, setIsLoading] = useState(false)
+  const [prevParams, setPrevParams] = useState(
+    {
+    "messages": [
+          // {
+          //   "role": "user",
+          //   "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
+          // },
+          
+        ],
+        "mode": "instruct",
+        "instruction_template": "Alpaca"
+  }
+);
 
   console.log(`${selectedKeywords.map(keyword=>keyword)}`)
 
@@ -74,41 +93,137 @@ export const Passage = (
 
   }, [])
 
-  const generate = async(passageId) => {
-    setIsLoading(true);
-    let llmParams = {
-      "messages": [
-          {
-            "role": "user",
-            "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
-          },
+  const generate = async(passageId, index) => {
+    // setIsLoading(true);
+    setIsGenerating(true);
+    // let llmParams = {
+    //   "messages": [
+    //       {
+    //         "role": "user",
+    //         "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
+    //       },
           
-        ],
-        "mode": "instruct",
-        "instruction_template": "Alpaca"
-    }
+    //     ],
+    //     "mode": "instruct",
+    //     "instruction_template": "Alpaca"
+    // }
+    // let tempPrevParams = prevParams;
+    let generatedPassageText = "";
+
+    console.log("tempPrevParams before if: ", tempPrevParams)
+    
+    //if first passage box
+    if(passageId === passages[0].id){
+      // first passage
+      // let tempPrevParams = prevParams;
 
 
-    if(passageId !== passages[0].id){
-      let previousPassageActiveText = getPreviousPassageActiveText(passageId);
-      console.log(`previousPassageActiveText: ${previousPassageActiveText}`)
-      llmParams.messages.push(
-        {
-          "role": "assistant",
-          "content": `${previousPassageActiveText}` //including the previous generated passages
-          // "content": `${.map(passageText => passageText)}` //including the previous generated passages
-        },
-        {
-          "role": "user",
-          "content": `Write a paragraph of a short story with these keywords: ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput} and continue with the knowledge of our past conversation`
+      //overwriting params for regenerationg
+      // if(tempPrevParams?.messages.length > 0){
+      //   tempPrevParams.messages = []
+      // }
+      tempPrevParams.messages[0] = 
+      {
+        "role": "user",
+        "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
+      }
+      
+      setPrevParams(
+        () => {
+          console.log("prevParams: ", prevParams)
+          
+          prevParams.messages.push(
+            {
+              "role": "user",
+              "content": `Write the first paragraph of short story with these keywords ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput}`
+            }
+          )
+        
+
+
+          return prevParams;
         }
       )
     }
+    else{
+
+      // other passages
+    // if(passageId !== passages[0].id){
+      let previousPassageActiveText = getPreviousPassageActiveText(passageId);
+      console.log(`previousPassageActiveText: ${previousPassageActiveText}`)
+      
+
+      console.log("tempPrevParams?.messages[index + 1]: ", tempPrevParams?.messages[index + 1]);
+      if(tempPrevParams?.messages[index * 2]){
+        // tempPrevParams.messages[index] = {}
+        tempPrevParams.messages[index * 2 - 1] = {
+          "role": "assistant",
+          "content": `${previousPassageActiveText}` //including the previous generated passages
+        }
+
+        tempPrevParams.messages[index * 2] = {
+          "role": "user",
+          "content": `Write a paragraph of a short story with these keywords: ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput} and continue with the knowledge of our past conversation`
+        }
+        // tempPrevParams.messages.splice(index+1, index + 2);
+      }
+      else{
+
+
+        tempPrevParams.messages.push(
+          {
+            "role": "assistant",
+            "content": `${previousPassageActiveText}` //including the previous generated passages
+          },
+          {
+            "role": "user",
+            "content": `Write a paragraph of a short story with these keywords: ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput} and continue with the knowledge of our past conversation`
+          }
+        )
+
+    }
+
+      setPrevParams(
+        () => {
+          // let messagesLen = prevParams?.messages?.length;
+          // prevParams.messages[messagesLen - 1].role = "assistant"
+          // let tempPrevParams = prevParams;
+          console.log("prevParams: ", prevParams)
+          prevParams.messages.push(
+            {
+              "role": "assistant",
+              "content": `${previousPassageActiveText}` //including the previous generated passages
+            },
+            {
+              "role": "user",
+              "content": `Write a paragraph of a short story with these keywords: ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput} and continue with the knowledge of our past conversation`
+            }
+          )
+
+          return prevParams;
+
+        }
+      )
+      // llmParams.messages.push(
+      //   {
+      //     "role": "assistant",
+      //     "content": `${previousPassageActiveText}` //including the previous generated passages
+      //     // "content": `${.map(passageText => passageText)}` //including the previous generated passages
+      //   },
+      //   {
+      //     "role": "user",
+      //     "content": `Write a paragraph of a short story with these keywords: ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput} and continue with the knowledge of our past conversation`
+      //   }
+      // )
+    }
+    console.log("tempPrevParams before llm post call: ", tempPrevParams)
+    console.log("prevParams before llm post call: ", prevParams)
     
     llmModelApi.post(
       // "http://localhost:1234/v1/completions",
       "/v1/chat/completions",
-      llmParams
+      // llmParams
+      tempPrevParams
       // {
         
       //   "messages": [
@@ -123,7 +238,8 @@ export const Passage = (
       // }
     )
     .then(res =>{
-      let generatedPassageText = res.data.choices[0].message.content;
+      //let generatedPassageText = res.data.choices[0].message.content;
+      generatedPassageText = res.data.choices[0].message.content;
       console.log(generatedPassageText);
       setPassageInput(generatedPassageText)
       addPassageText(passageId, generatedPassageText)
@@ -135,36 +251,82 @@ export const Passage = (
       console.error(error)
       // setSeverity("error");
       // setAlertMsg("Unable to generate Passage. Please Try Again");
-      setIsLoading(false);
+      setIsGenerating(false);
     })
     .finally(()=>{
       // setShowAlert(true);
       // setIsLoading(false);
+      imageModelApi.post(
+        "/sdapi/v1/txt2img",
+        {
+          //"prompt": `Award winning photography, ${selectedKeywords.map(keyword=>keyword)}, ${generatedPassageText}`,
+          "prompt": `Award winning photography, ${generatedPassageText}`,
+          //"prompt": `${passageInput}`,
+          "n_iter": 3,
+          // "n_iter" : 3,
+          "height" : 1024,
+          "width" : 1024,
+          "negative_prompt" : "disfigured, ugly, bad, immature, cartoon, anime, 3d, painting, b&w",
+          // "refiner_checkpoint" : "sd_xl_refiner_1.0.safetensors [7440042bbd]",
+          // "refiner_switch_at" : 0.8,
+          "restore_faces": true,
+          "seed": -1,
+          "denoising_strength" : 0.7,
+          "sampler_name" : "DPM++ 2M",
+          "scheduler" : "Automatic",
+          "batch_size" : 1,
+          "cfg_scale" : 7,
+          "disable_extra_networks" : false,
+          "do_not_save_grid" : false,
+          "do_not_save_samples" : false,
+          "enable_hr" : false
+  
+        }
+      )
+      .then(res =>{
+        console.log(res.data.images);
+        setImages(res.data.images)
+        addPassageImages(id, res.data.images)
+        
+        // setSeverity("success");
+        // setAlertMsg("Successfully generated Passage");
+        // setShowAlert(true);
+      })
+      .catch((error)=>{
+        console.error(error)
+        // set
+        // setSeverity("error");
+        // setAlertMsg("Unable to generate Passage. Please Try Again");
+      })
+      .finally(()=>{
+        setIsGenerating(false);
+        // setShowAlert(true);
+      });
     });
 
-    imageModelApi.post(
+    /* imageModelApi.post(
       "/sdapi/v1/txt2img",
       {
-        // "prompt": `Award winning photography ${selectedKeywords.map(keyword=>keyword)}, ${passageInput}`,
-        "prompt": `${passageInput}`,
+        "prompt": `Award winning photography, ${selectedKeywords.map(keyword=>keyword)}, ${passageInput}`,
+        //"prompt": `${passageInput}`,
         "n_iter": 3,
         // "n_iter" : 3,
-"height" : 1024,
-"width" : 1024,
-"negative_prompt" : "disfigured, ugly, bad, immature, cartoon, anime, 3d, painting, b&w",
-// "refiner_checkpoint" : "sd_xl_refiner_1.0.safetensors [7440042bbd]",
-// "refiner_switch_at" : 0.8,
-"restore_faces": true,
-"seed": -1,
-"denoising_strength" : 0.7,
-"sampler_name" : "DPM++ 2M",
-"scheduler" : "Automatic",
-"batch_size" : 1,
-"cfg_scale" : 7,
-"disable_extra_networks" : false,
-"do_not_save_grid" : false,
-"do_not_save_samples" : false,
-"enable_hr" : false
+        "height" : 1024,
+        "width" : 1024,
+        "negative_prompt" : "disfigured, ugly, bad, immature, cartoon, anime, 3d, painting, b&w",
+        // "refiner_checkpoint" : "sd_xl_refiner_1.0.safetensors [7440042bbd]",
+        // "refiner_switch_at" : 0.8,
+        "restore_faces": true,
+        "seed": -1,
+        "denoising_strength" : 0.7,
+        "sampler_name" : "DPM++ 2M",
+        "scheduler" : "Automatic",
+        "batch_size" : 1,
+        "cfg_scale" : 7,
+        "disable_extra_networks" : false,
+        "do_not_save_grid" : false,
+        "do_not_save_samples" : false,
+        "enable_hr" : false
 
       }
     )
@@ -186,7 +348,7 @@ export const Passage = (
     .finally(()=>{
       setIsLoading(false);
       // setShowAlert(true);
-    });
+    }); */
 
   }
 
@@ -268,14 +430,16 @@ export const Passage = (
             />
           }
           <Button 
-              onClick={()=>generate(id)}
+              onClick={()=>generate(id, index)}
               variant='contained'
-              disabled={passageInput?.length === 0 || isLoading} 
+              disabled={passageInput?.length === 0 || isLoading 
+                || isGenerating
+              } 
               sx={{
                   gap:'0.3rem'
               }}
           >
-              Generate Passage {isLoading && <CircularProgress sx={{color:'inherit'}} size={20}/>}
+              Generate Passage {isGenerating && <CircularProgress sx={{color:'inherit'}} size={20}/>}
           </Button>
         </Box>
         {hasPicture && <PictureSection passageId={id} setImages={setImages} images={images}/>}
