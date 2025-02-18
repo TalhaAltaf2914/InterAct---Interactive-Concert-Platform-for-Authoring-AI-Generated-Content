@@ -165,7 +165,12 @@ export const Passage = (
           "role": "user",
           "content": `Write a paragraph of a short story with these keywords: ${selectedKeywords.map(keyword=>keyword)} in 5 sentences. Start with ${passageInput} and continue with the knowledge of our past conversation`
         }
-        // tempPrevParams.messages.splice(index+1, index + 2);
+        let messagesLen = tempPrevParams.messages.length;
+
+        //remove the rest of the parameters if it isn't the last passage
+        if(((index * 2) + 1) !== messagesLen){
+          tempPrevParams.messages.splice((index*2) + 1, tempPrevParams.messages.length);
+        }
       }
       else{
 

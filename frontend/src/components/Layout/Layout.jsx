@@ -57,7 +57,7 @@ export const Layout = () => {
             <Grid item 
                 xs={12} 
                 md={12}
-                // md={8}
+                xl={8}
             >
                 <Outlet />
             </Grid>

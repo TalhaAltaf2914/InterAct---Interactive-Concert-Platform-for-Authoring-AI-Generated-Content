@@ -18,6 +18,13 @@ const styles = StyleSheet.create({
   page: { flexDirection: "column", padding: 30 },
   card: { marginBottom: 20, padding: 10, border: "1px solid black", flexDirection: "column" },  // Changed to row for side-by-side
   title: { fontSize: 16, marginBottom: 10 },
+  heading: { 
+    fontWeight:'bold', 
+    marginBottom: 10, 
+    textTransform:'capitalize',
+    textDecoration: "underline",
+    textAlign:'center'
+  },
   body: { fontSize: 12, flex: 1 },
   image: { width: 150, height: 150, marginLeft: 20 }, // Define image size and margin
 });
@@ -42,8 +49,11 @@ const MyPDFDocument = ({ passages, passageTexts, passageImages, getActivePassage
   
 
   return(
-  <Document>
+  <Document title='InterAct Script'>
+    
     <Page style={styles.page}>
+      <Text style={styles.heading}>InterAct Script</Text>
+
       {passages.map((passage, index) => (
         <View style={styles.card} key={passage.id}>
           <Text style={styles.title}>Passage {index + 1}</Text>
@@ -198,7 +208,7 @@ const generatePdfBlob = async () => {
             }
 
             style={{textDecoration:'none'}}
-            fileName="passages.pdf"
+            fileName="Passages.pdf"
             // onClick={() => setPdfReady(true)} // Ensure PDF updates after click
           >
             Export
