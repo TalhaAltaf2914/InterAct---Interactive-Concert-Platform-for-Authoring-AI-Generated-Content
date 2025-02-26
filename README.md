@@ -18,6 +18,8 @@ This project is a **React-based web application** that interacts with **open-sou
 
 ## Generative AI Part
 
+Warning: Arround 16 GB VRAM required to run text and image part
+
 ### Image Creation
 For Creation of Images we used https://github.com/AUTOMATIC1111/stable-diffusion-webui. With that you can deploy local diffusion models and already have an api-access integrated. From our experience SDXL Basemodel (https://stablediffusionxl.com/#download) had the overall best performance. Refiner models (https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0) can be added to improve image quality, but they further reduce the speed.
 You can follow the instructions of https://github.com/AUTOMATIC1111/stable-diffusion-webui to get it running on your hardware. In order to work seamlessly with our system, you need to exchange the webui-user.sh file (for linux) with the one included in this repo. This File basically configures the api and sets all ports.
