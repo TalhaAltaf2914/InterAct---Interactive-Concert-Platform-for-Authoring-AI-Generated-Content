@@ -1,6 +1,8 @@
-# AI-Powered React Web App
+# Interactive Concert Platform for Authoring AI-Generated Content
 
 This project is a **React-based web application** that interacts with **open-source AI models** for **image and text generation**. The frontend is built using **React and Material UI**, while the backend is powered by **Flask**. The application enables users to input queries, process them via AI models, and receive generated results in an interactive UI.
+
+[Project Link Tree](https://linktr.ee/interactive_concert_platform)
 
 ## Features
 - **Text Generation:** Uses AI models to generate human-like text.
