@@ -16,17 +16,28 @@ This project is a **React-based web application** that interacts with **open-sou
 
 ## Setup Instructions
 
-### Generative AI Part
+## Generative AI Part
 
-## Image Creation
-
+### Image Creation
 For Creation of Images we used https://github.com/AUTOMATIC1111/stable-diffusion-webui. With that you can deploy local diffusion models and already have an api-access integrated. From our experience SDXL Basemodel (https://stablediffusionxl.com/#download) had the overall best performance. Refiner models (https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0) can be added to improve image quality, but they further reduce the speed.
 You can follow the instructions of https://github.com/AUTOMATIC1111/stable-diffusion-webui to get it running on your hardware. In order to work seamlessly with our system, you need to exchange the webui-user.sh file (for linux) with the one included in this repo. This File basically configures the api and sets all ports.
 
-## Text Creation
+1) Install https://github.com/AUTOMATIC1111/stable-diffusion-webui
+2) Deploy Model https://stablediffusionxl.com/#download
+3) change the webui-user.sh file with the one included in this repo
+4) run webui.sh (for linux) to get it running
 
+
+### Text Creation
 For Creation of Texts we used https://github.com/oobabooga/text-generation-webui. It's simmilar to stable-diffusion-webui and also offers great possibilities to locally host LLMs with integrated API access. To deploy it locally, you can follow the steps from thier repo. We used Llama 3.1-8B (https://huggingface.co/meta-llama/Llama-3.1-8B) to generate text. In order to run with our project, you need to exchange the CMD_FLAGS.txt file. This enables api access and configures all ports.
 
+1) Install https://github.com/oobabooga/text-generation-webui
+2) Deploy Model https://huggingface.co/meta-llama/Llama-3.1-8B
+3) change the CMD_FLAGS.txt file
+4) run start_linux.sh (for linux)
+
+
+## Server side with Frontend and Backend
 
 ### Prerequisites
 Ensure you have the following installed:
