@@ -54,28 +54,35 @@ Ensure you have the following installed:
 ```sh
 git clone https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git
 cd InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content
+```
 
-2️⃣ Backend Setup (Flask)
+### 2️⃣ Backend Setup (Flask)
 
 Navigate to the backend directory and set up the Flask server:
 
+```
 cd backend
-pip install -r requirements.txt
-
+pip install -r requirements.tx
+```
 Start the Flask server:
 ```sh
 python app.py
+```
 
-3️⃣ Frontend Setup (React)
+### 3️⃣ Frontend Setup (React)
 
-Navigate to the frontend/ directory and install dependencies:
+Navigate to the frontend directory and install dependencies:
 
+```
 cd ../frontend
 npm install
+```
 
 Run the React development server:
 
+```
 npm start
+```
 
 Usage
 
