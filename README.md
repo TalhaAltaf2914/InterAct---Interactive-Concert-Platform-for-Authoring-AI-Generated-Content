@@ -52,16 +52,14 @@ Ensure you have the following installed:
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/TalhaAltaf2914/InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content.git
+cd InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content
 
 2️⃣ Backend Setup (Flask)
 
 Navigate to the backend/ directory and set up the virtual environment:
 
 cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
 pip install -r requirements.txt
 
 Start the Flask server:
