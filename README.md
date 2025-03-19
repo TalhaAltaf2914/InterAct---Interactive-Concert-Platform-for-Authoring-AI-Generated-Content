@@ -99,7 +99,7 @@ Usage
 
 
 Project Structure
-
+```
 📂 project-root
  ├── 📂 backend         # Flask server with AI model integration
  |   ├── instance/    # SQL lite Database Instances
@@ -113,5 +113,4 @@ Project Structure
  │   ├── package.json  # Frontend dependencies
  ├── README.md        # Project documentation
  ├── .gitignore       # Files to ignore in Git
-
-
+```
