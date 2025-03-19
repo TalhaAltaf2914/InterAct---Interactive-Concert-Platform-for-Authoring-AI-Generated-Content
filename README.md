@@ -62,7 +62,7 @@ Navigate to the backend directory and set up the Flask server:
 
 ```
 cd backend
-pip install -r requirements.tx
+pip install -r requirements.txt
 ```
 Start the Flask server:
 ```sh
@@ -81,7 +81,7 @@ npm install
 Run the React development server:
 
 ```
-npm start
+npm run dev
 ```
 
 Usage
@@ -89,7 +89,7 @@ Usage
 1. Start the backend (python app.py).
 
 
-2. Run the frontend (npm start).
+2. Run the frontend (npm run dev).
 
 
 3. Open http://localhost:5147/ in your browser.
@@ -102,12 +102,12 @@ Project Structure
 
 📂 project-root
  ├── 📂 backend         # Flask server with AI model integration
+ |   ├── instance/    # SQL lite Database Instances
  │   ├── app.py        # Main Flask API
- │   ├── routes.py     # API routes
- │   ├── models/       # AI model files
  │   ├── requirements.txt  # Backend dependencies
  ├── 📂 frontend        # React application
  │   ├── src/
+ |   |   ├── config/         # Model URI configuration setting
  │   │   ├── components/  # UI components
  │   │   ├── store/       # Zustand state management
  │   ├── package.json  # Frontend dependencies
