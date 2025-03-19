@@ -43,8 +43,8 @@ For Creation of Texts we used https://github.com/oobabooga/text-generation-webui
 
 ### Prerequisites
 Ensure you have the following installed:
-- **Node.js** (>= 16.x)
-- **Python** (>= 3.8)
+- **Node.js** (>= 20.14.0)
+- **Python** (>= 3.12.4)
 - **pip** (Python package manager)
 - **Git** (optional, for cloning the repo)
 
@@ -57,7 +57,7 @@ cd InterAct---Interactive-Concert-Platform-for-Authoring-AI-Generated-Content
 
 2️⃣ Backend Setup (Flask)
 
-Navigate to the backend/ directory and set up the virtual environment:
+Navigate to the backend directory and set up the Flask server:
 
 cd backend
 pip install -r requirements.txt
